@@ -1,15 +1,28 @@
 const express = require('express');
-const {ProductManager} = require('./Managers/desafio-entregable-3.js'); //no olvidar {}
+const {ProductManager} = require('./Managers/ProductManager.js');
+const {Product} = require('./Models/Product.js');
+import handlebars from 'express-handlebars'
+
 
 const app = express() //la variable app contiene todas las funcionalidades de express
 const PORT = 8080;
-app.use(express.urlencoded({extended:true}))
+
+app.use(express.json()) //El servidor podra recibir jsons en la request
+app.use(express.urlencoded({extended:true}))//permite que se pueda enviar informacion desde la url. 
 
 let pm = new ProductManager("./files/products.json")
 
-app.get('/products',async (req,res) => {
 
-    console.log("Recibida solicitud a /products");
+//------------ GET ------------
+app.get('/',(req,res) => {
+    res.send("hola desde el back")
+})
+
+
+app.get('/api/products/',async (req,res) => {
+
+    try{
+        console.log("Se mostrarán todos los productos");
     const productsGotten = await pm.getProductsAsync()
 
     let limit = req.query.limit; //en la url debe decir localhost:8080/products/?limite=3
@@ -21,26 +34,74 @@ app.get('/products',async (req,res) => {
     }else{
         res.json(productsGotten)
     }
+    }
+    catch(error){
+        console.error("Error al obtener productos:", error);
+        res.status(500).json({ error: "Error interno del servidor" });// OK error desde el servidor?
 
+    }
+    
 })
 
 
 
-app.get("/products/:idProduct",async (req,res)=> {
+app.get("/api/products/:pid",async (req,res)=> {
     
-    let idProduct = req.params.idProduct
+    try{
+        let pid = req.params.pid
 
-    console.log(idProduct)
-    console.log(typeof(idProduct))
-    idProduct = parseInt(idProduct)
-    console.log(typeof(idProduct))
+        pid = parseInt(pid)
+    
+        if(pid && !isNaN(pid)){        
+            let productSelectedById = await pm.getProductsByIdAsync(pid)
+            //res.json({productSelectedById})
+            res.send(productSelectedById)
+        } else {res.status(404).json({ error: "Producto no encontrado" })};
+    }
+   catch (error){
+    console.error("Error al obtener producto por ID:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+    }
+})
 
-    if(idProduct && !isNaN(idProduct)){        
-        let productSelectedById = await pm.getProductsByIdAsync(idProduct)
-        //res.json({productSelectedById})
-        res.send(productSelectedById)
-    } else {res.status(404).json({ error: "Producto no encontrado" })};
+//------------ POST ------------
+app.post("/api/products/",async (req,res)=> {
+    try {
+        let newProduct = req.body;
+        await pm.addProductsAsync(newProduct);
+        res.status(400).send({ status: "success", message: "producto agregado" });
+    } catch (error) {
+        console.error("Error al agregar producto:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+})
 
+
+//------------ PUT ------------
+app.put("/api/products/:pid",async(req,res)=> {
+    try{
+        let pid = req.params.pid
+        let productToUpdate = req.body;
+        await pm.updateProduct(pid,productToUpdate);
+        res.status(400).send({status:"success",message:"producto actualizado"})
+    }
+    catch(error){
+        console.log("error al agregar producto",error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+})
+
+//------------ DELETE ------------
+app.delete("/api/products/:pid",async (req,res) => {
+    try{
+        let pid = req.params.pid;
+        await pm.deleteProduct(pid)
+        res.status(400).send({status:"success",message:"producto eliminado"})
+    }
+    catch(error){
+        console.log("error al BORRAR producto",error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
 })
 
 
