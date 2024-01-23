@@ -1,14 +1,41 @@
 const express = require('express');
 const {ProductManager} = require('./Managers/ProductManager.js');
 const {Product} = require('./Models/Product.js');
-import handlebars from 'express-handlebars'
+const productsRouter = require('../routes/products.router.js'); 
+const cartRouter = require('../routes/carts.router.js') 
+const path = require('path')
+
+
+const fileURLToPath = require('url')
+const { dirname, join } = require('path');
+
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 
 
 const app = express() //la variable app contiene todas las funcionalidades de express
 const PORT = 8080;
 
+
+//Middlewares
 app.use(express.json()) //El servidor podra recibir jsons en la request
 app.use(express.urlencoded({extended:true}))//permite que se pueda enviar informacion desde la url. 
+app.use(express.static(path.join(__dirname,'public')))
+
+
+//Routes
+app.use('/',productsRouter)
+app.use('/',cartRouter)
+
+app.get('/',(req,res) => {
+    //res.sendFile(path.join(__dirname,'public','index.html'))
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+
+})
+
+
 
 let pm = new ProductManager("./files/products.json")
 
