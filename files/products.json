@@ -2,10 +2,21 @@
   {
     "title": "Apple",
     "description": "iPhone SE Plus",
-    "price": "ARS 29,999",
-    "thumbnail": "https://example.com/huawei_p40pro.jpg",
+    "price": "Edición especial con potente chip, cámara avanzada y soporte para 5G.",
+    "thumbnail": "ARS 29,999",
     "code": "APSEPLUS-ARG",
     "stock": 100,
-    "id": 3
+    "status": true,
+    "id": 1
+  },
+  {
+    "title": "LG",
+    "description": "LG Vortex Pro",
+    "price": "Teléfono con diseño elegante, sistema de audio premium y funciones de grabación avanzadas.",
+    "thumbnail": "ARS 19,999",
+    "code": "LGVPRO-ARG",
+    "stock": 120,
+    "status": true,
+    "id": 2
   }
 ]

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { ProductManager } from './ProductManager.js';
 
-const pm = new ProductManager()
+let pm = new ProductManager("./files/products.json")
 
 export class CartManager{
 
@@ -20,14 +20,12 @@ export class CartManager{
             }
         
         this.carts = JSON.parse(fileContent);
-        console.log("Carritos de compras cargados correctamente");
+        //console.log("Carritos de compras CARGADO correctamente desde loadCartsFromFile");
         return this.carts;
-
         }
 
         catch (error) {
-
-            console.error("Error cargando carritos de compras desde el archivo ", error);
+            console.error("Error cargando carritos de compras desde el archivo desde loadCartsFromFile", error);
             this.code = [];
             return null
 
@@ -37,14 +35,13 @@ export class CartManager{
     async saveCartOnFile(){
         try{
             await fs.promises.writeFile(this.filePath,JSON.stringify(this.carts,null,2))
-            console.log(("carrito de compras GUARDADO correctamente"))
+            //console.log(("carrito de compras GUARDADO correctamente"))
         }
         catch(error){
             console.error('Error escribiendo en el archivo:', error);
         }
     }
 
-    
     async getCartsAsync() {
         await this.loadCartsFromFile();
         console.log("++++ Carrito de compras ++++")
@@ -73,48 +70,52 @@ export class CartManager{
     }
 
     async getCartByIdAsync(cid) {
-        await this.loadCartsFromFile();
-        return this.carts.find(cart => cart.id === cid);
+        this.carts = await this.loadCartsFromFile();
+        const cart = this.carts.find(cart => cart.id === cid);
+        //console.log(`Carrito de compras encontrado con el id ${cart.id} desde getCartByIdAsync `)
+        return cart
       }
-
 
     async addProductToCartAsync(cid, pid) {
 
-        await this.loadCartsFromFile();
+        //await this.loadCartsFromFile();
         
-        const cartSelected = this.carts.find(c => c.id === cid); 
-        console.log(`Carrito encontrado con el id ${cid},${cartSelected.id}`);
-    
+        const cartSelected = await this.getCartByIdAsync(cid) 
+        
         if (!cartSelected) {
-            console.log(`Carrito con ID ${cid} no encontrado.`);
+            console.log(`Carrito con ID ${cid} no encontrado desde addProductToCartAsync.`);
+            return null;
+        }else{
+            //console.log(`Carrito encontrado con el id ${cid} desde addProductToCartAsync`);
+    }
+      
+        const productSelected = await pm.getProductsByIdAsync(pid);
+        //console.log(`Product encontrado con el id ${pid} desde addProductToCartAsync`);
+    
+        if (!productSelected) {
+            console.log(` Producto con ID ${pid} no encontrado desde addProductToCartAsync.`);
             return null;
         }
-        //const existingProduct = cartSelected.products.find(product => product.id === pid);
-      
-        const existingProduct = cartSelected.products.find(p => p.product === pid)
-        //console.log(existingProduct.pid,existingProduct)
-
-        if (existingProduct) {
+         const existingProduct = cartSelected.products.find(p => p.product === pid)
+  
+         if (existingProduct) {
             existingProduct.quantity = existingProduct.quantity + 1;
         }
         else {
             cartSelected.products.push({ product: pid, quantity: 1 });
         }
-        await this.saveCartOnFile();
-        return cartSelected;
-        }
 
+         await this.saveCartOnFile();
+         return cartSelected;
+        }
 
 }
 
-
 const cm = new CartManager("./files/carts.json")
-
 
 //cm.loadCartsFromFile();
 //cm.getCartsAsync();
 //cm.addCartAsync()
-//cm.addProductToCartAsync(1,1)
 
 //cm.addProductToCartAsync(1,1)
 

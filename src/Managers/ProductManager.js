@@ -33,7 +33,7 @@ export class ProductManager {
             const fileContent = await fs.promises.readFile(this.filePath, 'utf-8');
             this.products = JSON.parse(fileContent);
             
-            console.log("Productos cargados correctamente en el archivo");
+            //console.log("Productos cargados correctamente en el archivo desde loadProductsFromFile");
             return fileContent;
         } catch (error) {
             console.error("Error cargando productos desde el archivo ", error);
@@ -80,10 +80,9 @@ export class ProductManager {
         await this.loadProductsFromFile();
         const product = this.products.find(product => product.id === id)
         if(!product){
-            console.log(`producto con ID ${id} no encontrado`)
+            console.log(`Producto con ID ${id} no encontrado desde getProductsByIdAsync`)
         } else{
-            //console.log(`Producto encontrado con el id: ${id}`)
-            //console.log(product)
+           // console.log(`Producto encontrado con el id: ${id} desde getProductsByIdAsync`)
             return product
         }
 }
@@ -196,14 +195,14 @@ const prod6 = new Product(
   );
 
 
- //pm.addProductsAsync(prod1)
- //pm.addProductsAsync(prod2)
+// pm.addProductsAsync(prod1)
+//pm.addProductsAsync(prod2)
  //pm.addProductsAsync(prod3)
 //pm.addProductsAsync(prod4)
 //pm.addProductsAsync(prod5)
 // pm.addProductsAsync(prod6)
 
 //pm.getProductsAsync()
-//pm.getProductsByIdAsync(2);
+//pm.getProductsByIdAsync(4);
 //pm.updateProduct(1, { title: "Mauro"});
 //pm.deleteProduct(1);
