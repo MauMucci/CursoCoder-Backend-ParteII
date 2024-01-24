@@ -1,10 +1,13 @@
-const fs = require('fs'); //FUNCIONA ELIMINANDO TYPE: MODULE DEL PACAKAGE.JSON
-const Product = require('../Models/Product');
+import fs from 'fs'
+ //FUNCIONA ELIMINANDO TYPE: MODULE DEL PACAKAGE.JSON
 
+import { Product } from '../Models/Product.js';
 
-let idIncrementado = 0;
+//
 
-class ProductManager {
+//let idIncrementado = 0;
+
+export class ProductManager {
 
     constructor(file) {
         this.products = []
@@ -38,7 +41,7 @@ class ProductManager {
     }
 
     async addProductsAsync(product) {
-        await this.loadProductsFromFile()
+        
         if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
             console.log("datos incompletos")
             return null
@@ -48,27 +51,28 @@ class ProductManager {
             console.log(`Código [${product.code}] ya usado`);
         }
         else {
-            //
-            console.log(`id del producto anterior ${this.products.length}`)
-            //idIncrementado++;
-            //product.id = idIncrementado
-            //console.log(`idincrementado ${idIncrementado}`)
-            let idAux = this.products.length+1
-            product.id = idAux;
-            console.log(`idAux ${idAux}`)
-            this.products.push(product)
-            console.log(`Producto agregado con id ${product.id}`);
-                  
+            
+            if(this.products.length === 0){//Si no hay productos en el arreglo => le asignamos el id 1
+                product.id = 1;            
+                console.log("Primer producto agregado correctamente " + product.title + " id: "+ product.id)  
+            }
+                else{
+                    await this.loadProductsFromFile()
+                    const lastProduct = this.products [this.products.length-1] 
+                    product.id = lastProduct.id + 1;           
+                }
+           
+            this.products.push(product) 
+            await this.saveProductsOnFile(); 
         }
-        await this.saveProductsOnFile();
+        
     }
 
      async getProductsAsync() {
       await this.loadProductsFromFile();
       console.log("++++ Productos ++++")
       console.log(this.products) 
-      let productsGotten = this.products
-      return productsGotten    
+      return this.products    
     }       
 
     async getProductsByIdAsync(id) {
@@ -192,11 +196,6 @@ const prod6 = new Product(
   );
 
 
-module.exports={
-    ProductManager
-}
-
-
  //pm.addProductsAsync(prod1)
  //pm.addProductsAsync(prod2)
  //pm.addProductsAsync(prod3)
@@ -207,4 +206,4 @@ module.exports={
 //pm.getProductsAsync()
 //pm.getProductsByIdAsync(2);
 //pm.updateProduct(1, { title: "Mauro"});
-//pm.deleteProduct(2);//
+//pm.deleteProduct(1);

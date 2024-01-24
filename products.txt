@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Apple",
+    "description": "iPhone SE Plus",
+    "price": "ARS 29,999",
+    "thumbnail": "https://example.com/huawei_p40pro.jpg",
+    "code": "APSEPLUS-ARG",
+    "stock": 100
+  },
+  {
+    "title": "LG",
+    "description": "LG Vortex Pro",
+    "price": "ARS 19,999",
+    "thumbnail": "https://example.com/huawei_p40pro.jpg",
+    "code": "LGVPRO-ARG",
+    "stock": 120
+  },
+  {
+    "title": "Motorola",
+    "description": "MotoG Fusion",
+    "price": "ARS 17,499",
+    "thumbnail": "https://example.com/huawei_p40pro.jpg",
+    "code": "MGFUSION-ARG",
+    "stock": 180
+  },
+  {
+    "title": "Samsung",
+    "description": "Galaxy A90 Neo",
+    "price": "ARS 21,799",
+    "thumbnail": "https://example.com/huawei_p40pro.jpg",
+    "code": "SGA90NEO-ARG",
+    "stock": 150
+  },
+  {
+    "title": "TCL",
+    "description": "TCL 10L Lite",
+    "price": "ARS 10,499",
+    "thumbnail": "https://example.com/huawei_p40pro.jpg",
+    "code": "TCL10LLITE-ARG",
+    "stock": 220
+  },
+  {
+    "title": "Xiaomi",
+    "description": "Redmi Note X",
+    "price": "ARS 14,999",
+    "thumbnail": "https://example.com/huawei_p40pro.jpg",
+    "code": "XMREDMINX-ARG",
+    "stock": 200
+  }
+]
