@@ -8,12 +8,6 @@ let cm = new CartManager('./files/carts.json')
 let pm = new ProductManager('./files/products.json')
 
 //------------ GET ------------
-cartsRouter.get('/', (req, res) => {
-    res.send("HOLIS DESDE ROUTER CARTS");
-});
-
-
-
 cartsRouter.get('/:cid',async(req,res) => {
     try {
         let cid = req.params.cid
@@ -37,6 +31,7 @@ cartsRouter.get('/:cid',async(req,res) => {
 cartsRouter.post('/:cid/product/:pid',async(req,res) => {
 
     try{
+      console.log("1- Entro al endpoint")
         const cid = parseInt(req.params.cid);        
         const pid = parseInt(req.params.pid);  
      
@@ -46,16 +41,17 @@ cartsRouter.post('/:cid/product/:pid',async(req,res) => {
             const cartSelectedById = await cm.getCartByIdAsync(cid)     
 
             if (cartSelectedById) {
-                const productSelectedById = await pm.getProductsByIdAsync(pid);
-                console.log("1");     
+              console.log("2- carrito encontrado")
+              const productSelectedById = await pm.getProductsByIdAsync(pid);                
 
-                if (productSelectedById) {
-                    console.log(`Agrego data ${cartSelectedById}, ${productSelectedById}`);
-                    console.log(cartSelectedById.id, productSelectedById.id);
-                    await cm.addProductToCartAsync(cartSelectedById.id, productSelectedById.id);
-                    // borrar console.log(cartSelectedById, productSelectedById);
-                  } else {
-                    res.status(404).json({ error: `Producto con ID ${pid} no encontrado` });
+              if (productSelectedById) {
+                console.log(("3- producto encontrado"))
+                console.log(`data ${cartSelectedById.id}, ${productSelectedById.id}`);
+                await cm.addProductToCartAsync(cartSelectedById.id, productSelectedById.id);
+                console.log("Producto agregado al carrito correctamente");
+                res.status(200).json({ message: "Producto agregado al carrito correctamente" });
+                } else {
+                  res.status(404).json({ error: `Producto con ID ${pid} no encontrado` });
                   }
                 } else {
                   res.status(404).json({ error: `Carrito con ID ${cid} no encontrado` });
@@ -70,11 +66,5 @@ cartsRouter.post('/:cid/product/:pid',async(req,res) => {
             }
         })
            
-
-
-
-
-
-
 
 export {cartsRouter}

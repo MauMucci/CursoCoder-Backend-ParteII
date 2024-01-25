@@ -35,7 +35,8 @@ export class ProductManager {
             
             //console.log("Productos cargados correctamente en el archivo desde loadProductsFromFile");
             return fileContent;
-        } catch (error) {
+            
+        }catch (error) {
             console.error("Error cargando productos desde el archivo ", error);
         }
     }
