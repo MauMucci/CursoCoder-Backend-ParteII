@@ -10,17 +10,17 @@ productsRouter.get("/",async (req,res) => {
     
     try{
         console.log("Se mostrarán todos los productos");
-    const productsGotten = await pm.getProductsAsync()
+        const productsGotten = await pm.getProductsAsync()
 
-    let limit = req.query.limit; //en la url debe decir localhost:8080/products/?limite=3
-    
-    if (limit && !isNaN(limit) && productsGotten.length > limit) {
-        console.log(limit)
-        const limitedProductsList = productsGotten.slice(0, limit)  //slice crea un nuevo array que contiene los primeros -limit- elementos de products
-        res.send({ limitedProductsList });
-    }else{
-        res.json(productsGotten)
-    }
+        let limit = req.query.limit; //en la url debe decir localhost:8080/products/?limite=3
+        
+        if (limit && !isNaN(limit) && productsGotten.length > limit) {
+            console.log(limit)
+            const limitedProductsList = productsGotten.slice(0, limit)  //slice crea un nuevo array que contiene los primeros -limit- elementos de products
+            res.send({ limitedProductsList });
+        }else{
+            res.json(productsGotten)
+        }
     }
     catch(error){
         console.error("Error al obtener productos:", error);
