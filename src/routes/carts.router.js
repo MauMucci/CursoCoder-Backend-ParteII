@@ -1,6 +1,8 @@
 import express from 'express';
-import { CartManager } from '../src/Managers/CartManager.js';
-import { ProductManager } from '../src/Managers/ProductManager.js';
+import  ProductManager  from '../Managers/ProductManager.js';
+import  CartManager  from '../Managers/CartManager.js';
+
+
 
 const cartsRouter = express.Router();
 
@@ -28,6 +30,19 @@ cartsRouter.get('/:cid',async(req,res) => {
 })
 
 //------------ POST ------------
+cartsRouter.post('/',async(req,res) => {
+  try {
+    const newCart = await cm.addCartAsync()
+    res.status(201).json({ message: "Carrito creado exitosamente", cart: newCart })
+  } catch (error) {
+    console.error("Error al crear carrito:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+    
+  }
+})
+
+
+
 cartsRouter.post('/:cid/product/:pid',async(req,res) => {
 
     try{

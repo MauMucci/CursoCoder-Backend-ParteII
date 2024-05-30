@@ -1,13 +1,10 @@
 import fs from 'fs'
- //FUNCIONA ELIMINANDO TYPE: MODULE DEL PACAKAGE.JSON
-
 import { Product } from '../Models/Product.js';
 
-//
 
 //let idIncrementado = 0;
 
-export class ProductManager {
+export default class ProductManager {
 
     constructor(file) {
         this.products = []
@@ -33,17 +30,22 @@ export class ProductManager {
             const fileContent = await fs.promises.readFile(this.filePath, 'utf-8');
             this.products = JSON.parse(fileContent);
             
-            //console.log("Productos cargados correctamente en el archivo desde loadProductsFromFile");
             return fileContent;
             
         }catch (error) {
-            console.error("Error cargando productos desde el archivo ", error);
+            if (error.code === 'ENOENT') {
+                console.warn("Archivo no encontrado, inicializando lista de productos vacía.");
+                this.products = [];
+            }
+            else{
+                console.error("error cargando productos desde el archivo",error)
+            }
         }
     }
 
     async addProductsAsync(product) {
         
-        if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
+        if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock || !product.category==null) {
             console.log("datos incompletos")
             return null
         }
@@ -52,13 +54,14 @@ export class ProductManager {
             console.log(`Código [${product.code}] ya usado`);
         }
         else {
-            
+            await this.loadProductsFromFile();
+
             if(this.products.length === 0){//Si no hay productos en el arreglo => le asignamos el id 1
                 product.id = 1;            
                 console.log("Primer producto agregado correctamente " + product.title + " id: "+ product.id)  
             }
                 else{
-                    await this.loadProductsFromFile()
+                    await this.loadProductsFromFile();
                     const lastProduct = this.products [this.products.length-1] 
                     product.id = lastProduct.id + 1;           
                 }
@@ -69,11 +72,11 @@ export class ProductManager {
         
     }
 
-     async getProductsAsync() {
-      await this.loadProductsFromFile();
-      console.log("++++ Productos ++++")
-      console.log(this.products) 
-      return this.products    
+    async getProductsAsync() {
+        await this.loadProductsFromFile();
+        console.log("++++ Productos ++++")
+        console.log(this.products) 
+        return this.products    
     }       
 
     async getProductsByIdAsync(id) {
@@ -90,23 +93,24 @@ export class ProductManager {
 
 async updateProduct(id, updatedFields) {
     try {
-        // Cargar productos desde el archivo antes de actualizar
         await this.loadProductsFromFile();
 
-        // Encuentro el índice del producto con el ID dado por parámetro
         const index = this.products.findIndex(product => product.id === parseInt(id)); //Importante parsear id
 
         if (index === -1) {
             console.log(`Producto con ID ${id} no encontrado. No se actualizará.`);
+            return
         } else {
-            // Mantener el ID al actualizar
-            updatedFields.id = id;
 
-            // Reemplazo el producto obtenido con index por updatedFields
-            this.products[index] = {
+
+            // Asegurar que el ID no se modifica
+            const updatedProduct = {
                 ...this.products[index],
-                ...updatedFields
+                ...updatedFields,
+                id: this.products[index].id,
             };
+
+            this.products[index] = updatedProduct
 
             console.log(`Producto con ID ${id} actualizado correctamente.`);
             // Guardar la lista actualizada en el archivo y devolver la promesa
@@ -120,27 +124,24 @@ async updateProduct(id, updatedFields) {
 
 
 async deleteProduct(id) {
-    // Cargar productos desde el archivo antes de eliminar
     await this.loadProductsFromFile();
-
-    // Encontrar el índice del producto con el ID proporcionado
     const index = this.products.findIndex(product => product.id === parseInt(id));
 
     if (index === -1) {
         console.log(`Producto con ID ${id} no encontrado. No se eliminará.`);
     } else {
-        // Eliminar el producto del array
-        this.products.splice(index, 1);
+
+        const deletedProduct = this.products.splice(index, 1)[0];
         console.log(`Producto con ID ${id} eliminado correctamente.`);
+        await this.saveProductsOnFile();
+        return deletedProduct;
     }
 
-    // Guardar la lista actualizada en el archivo y devolver la promesa
-    return this.saveProductsOnFile();
 }
 }
 
 
-let pm = new ProductManager("./files/products.json")
+let pm = new ProductManager("./data/products.json")
 
 const prod1 = new Product(
     "Apple",
@@ -148,7 +149,8 @@ const prod1 = new Product(
     "Edición especial con potente chip, cámara avanzada y soporte para 5G.",
     "ARS 29,999",
     "APSEPLUS-ARG",
-    100
+    100,
+    "Smartphones"
   );
 const prod2 = new Product(
     "LG",
@@ -156,7 +158,9 @@ const prod2 = new Product(
     "Teléfono con diseño elegante, sistema de audio premium y funciones de grabación avanzadas.",
     "ARS 19,999",
     "LGVPRO-ARG",
-    120
+    120,
+    "Smartphones"
+
   );
 
 const prod3 = new Product(
@@ -165,7 +169,9 @@ const prod3 = new Product(
     "Smartphone con pantalla infinita, cámara versátil y batería de larga duración.",
     "ARS 17,499",
     "MGFUSION-ARG",
-    180
+    180,
+    "Smartphones"
+
   );
 
 const prod4 = new Product(
@@ -201,9 +207,9 @@ const prod6 = new Product(
  //pm.addProductsAsync(prod3)
 //pm.addProductsAsync(prod4)
 //pm.addProductsAsync(prod5)
-// pm.addProductsAsync(prod6)
+pm.addProductsAsync(prod6)
 
-//pm.getProductsAsync()
-//pm.getProductsByIdAsync(4);
+pm.getProductsAsync()
+pm.getProductsByIdAsync(4);
 //pm.updateProduct(1, { title: "Mauro"});
 //pm.deleteProduct(1);
