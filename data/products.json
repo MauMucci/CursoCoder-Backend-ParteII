@@ -1,0 +1,24 @@
+[
+  {
+    "title": "Motorola",
+    "description": "MotoG Fusion",
+    "price": "Smartphone con pantalla infinita, cámara versátil y batería de larga duración.",
+    "thumbnail": "ARS 17,499",
+    "code": "MGFUSION-ARG",
+    "stock": 180,
+    "status": true,
+    "category": "Smartphones",
+    "id": 1
+  },
+  {
+    "title": "Apple",
+    "description": "iPhone SE Plus",
+    "price": "Edición especial con potente chip, cámara avanzada y soporte para 5G.",
+    "thumbnail": "ARS 29,999",
+    "code": "APSEPLUS-ARG",
+    "stock": 100,
+    "status": true,
+    "category": "Smartphones",
+    "id": 2
+  }
+]
