@@ -2,8 +2,8 @@
   {
     "title": "Motorola",
     "description": "MotoG Fusion",
-    "price": "Smartphone con pantalla infinita, cámara versátil y batería de larga duración.",
-    "thumbnail": "ARS 17,499",
+    "price": 17499,
+    "thumbnail": "https://example.com/motorola-thumbnail.jpg",
     "code": "MGFUSION-ARG",
     "stock": 180,
     "status": true,
@@ -13,12 +13,56 @@
   {
     "title": "Apple",
     "description": "iPhone SE Plus",
-    "price": "Edición especial con potente chip, cámara avanzada y soporte para 5G.",
-    "thumbnail": "ARS 29,999",
+    "price": 29999,
+    "thumbnail": "https://example.com/iphone-thumbnail.jpg",
     "code": "APSEPLUS-ARG",
     "stock": 100,
     "status": true,
     "category": "Smartphones",
     "id": 2
+  },
+  {
+    "title": "Televisor TCL",
+    "description": "TV china",
+    "price": 100000,
+    "thumbnail": "https://example.com/tv-thumbnail.jpg",
+    "code": "TVTCL",
+    "stock": 10,
+    "status": true,
+    "category": "Electronics",
+    "id": 3
+  },
+  {
+    "title": "Samsung Galaxy S21",
+    "description": "Último modelo de Samsung con pantalla AMOLED y cámara de alta resolución.",
+    "price": 85000,
+    "thumbnail": "https://example.com/samsung-galaxy-thumbnail.jpg",
+    "code": "SGS21-ARG",
+    "stock": 150,
+    "status": true,
+    "category": "Smartphones",
+    "id": 4
+  },
+  {
+    "title": "2Samsung Galaxy S21",
+    "description": "2Último modelo de Samsung con pantalla AMOLED y cámara de alta resolución.",
+    "price": 85000,
+    "thumbnail": "https://example.com/samsung-galaxy-thumbnail.jpg",
+    "code": "SGS21-ARG",
+    "stock": 150,
+    "status": true,
+    "category": "Smartphones",
+    "id": 5
+  },
+  {
+    "title": "prueba",
+    "description": "prueba",
+    "price": "10",
+    "thumbnail": "prueba.com",
+    "code": "prueba",
+    "stock": "1",
+    "category": "prueba",
+    "status": "true",
+    "id": 6
   }
 ]

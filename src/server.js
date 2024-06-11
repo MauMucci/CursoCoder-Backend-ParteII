@@ -5,6 +5,7 @@ import { productsRouter } from './routes/products.router.js';
 import viewsrouter from './routes/views.router.js';
 import {cartsRouter} from './routes/carts.router.js'
 import { Server } from 'socket.io';
+import ProductManager from './Managers/ProductManager.js';
 
 
 const app = express() 
@@ -16,7 +17,6 @@ const io = new Server(httpServer)
 //Middlewares
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
-// app.use(express.static(path.resolve(__dirname, "/public")))
 app.use(express.static(__dirname + "/public"))
 
 
@@ -26,22 +26,31 @@ app.use('/api/carts',cartsRouter)
 app.use('/',viewsrouter)
 
 
-
 //Handlebars
 app.engine('handlebars',handlebars.engine())
 app.set('views',__dirname + '/views')
 app.set('view engine','handlebars')
 // app.use(express.static(__dirname + 'public'))
 
-
+const pm = new ProductManager("./data/products.json")
 
 //Websocket
 io.on('connection',(socket) => {
     console.log(`Nuevo cliente conectado con el id ${socket.id}`);
 
-    socket.on('saludo', data => {
-        console.log("Hola desde servidor!")
+    //Evento para agregar productos
+    socket.on("addProduct", async product => {  
+        await pm.addProductsAsync(product);
+        const products = await pm.getProductsAsync(); 
+        io.emit('updateProducts', products);
+    });
+
+    //Evento para borrar productos
+    socket.on('deleteProduct',async productId => {
+        await pm.deleteProduct(productId)
+        const products = await pm.getProductsAsync()
+        io.emit('updateProducts',products)
     })
 
-    
+
 })
