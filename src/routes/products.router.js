@@ -87,6 +87,7 @@ productsRouter.delete('/:pid', async (req, res) => {
 
         await pm.deleteProduct(pid);
         res.send({ status: "success", message: "Producto eliminado" });
+        
     } catch (error) {
         console.error("Error al borrar producto:", error);
         res.status(404).json({ error: "Producto no encontrado" });

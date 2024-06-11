@@ -1,4 +1,13 @@
-<h1>Listado de Productos MAIN</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Productos index</title>
+</head>
+<body>
+    
+    <h1>Listado de Productos index</h1>
     <table border="1">
         <thead>
             <tr>
@@ -18,6 +27,14 @@
                     <td>{{this.code}}</td>
                     <td>{{this.stock}}</td>
                 </tr>
-            {{/each}}
+            {{/each}}            
+
         </tbody>
     </table>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/index.js"></script>
+        
+    </body>
+
+</html>
+

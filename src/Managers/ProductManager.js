@@ -74,8 +74,7 @@ export default class ProductManager {
 
     async getProductsAsync() {
         await this.loadProductsFromFile();
-        console.log("++++ Productos ++++")
-        console.log(this.products) 
+        
         return this.products    
     }       
 
