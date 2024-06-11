@@ -1,8 +1,8 @@
 import express from 'express';
-import ProductManager  from '../Managers/ProductManager.js';
+import  ProductManager  from '../Managers/ProductManager.js';
 
 const productsRouter = express.Router()
-let pm = new ProductManager("./data/products.json")
+let pm = new ProductManager("./files/products.json")
 
 //------------ GET ------------
 productsRouter.get("/",async (req,res) => {
@@ -87,7 +87,6 @@ productsRouter.delete('/:pid', async (req, res) => {
 
         await pm.deleteProduct(pid);
         res.send({ status: "success", message: "Producto eliminado" });
-        
     } catch (error) {
         console.error("Error al borrar producto:", error);
         res.status(404).json({ error: "Producto no encontrado" });

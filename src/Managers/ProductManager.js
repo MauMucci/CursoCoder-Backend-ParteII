@@ -74,7 +74,8 @@ export default class ProductManager {
 
     async getProductsAsync() {
         await this.loadProductsFromFile();
-        
+        console.log("++++ Productos ++++")
+        console.log(this.products) 
         return this.products    
     }       
 
@@ -85,7 +86,7 @@ export default class ProductManager {
         if(!product){
             console.log(`Producto con ID ${id} no encontrado desde getProductsByIdAsync`)
         } else{
-            console.log(`Producto encontrado con el id: ${id} desde getProductsByIdAsync ${product.title}`)
+           // console.log(`Producto encontrado con el id: ${id} desde getProductsByIdAsync`)
             return product
         }
 }
@@ -170,6 +171,7 @@ const prod3 = new Product(
     "MGFUSION-ARG",
     180,
     "Smartphones"
+
   );
 
 const prod4 = new Product(
@@ -178,8 +180,7 @@ const prod4 = new Product(
     "Smartphone con pantalla Super AMOLED, triple cámara y carga rápida.",
     "ARS 21,799",
     "SGA90NEO-ARG",
-    150,
-    "Smartphones"
+    150
   );
 
 const prod5 = new Product(
@@ -188,8 +189,7 @@ const prod5 = new Product(
     "Smartphone asequible con pantalla HD, rendimiento eficiente y diseño moderno.",
     "ARS 10,499",
     "TCL10LLITE-ARG",
-    220,
-    "Smartphones"
+    220
   );
 
 const prod6 = new Product(
@@ -198,16 +198,18 @@ const prod6 = new Product(
     "Teléfono con procesador Snapdragon, cámara cuádruple y batería de alta capacidad.",
     "ARS 14,999",
     "XMREDMINX-ARG",
-    200,
-    "Smartphones"
+    200
   );
 
-// pm.addProductsAsync(prod1)
-// pm.addProductsAsync(prod2)
-// pm.addProductsAsync(prod3)
-// pm.addProductsAsync(prod4)
 
-//pm.getProductsAsync()
-//pm.getProductsByIdAsync(3)
+// pm.addProductsAsync(prod1)
+//pm.addProductsAsync(prod2)
+ //pm.addProductsAsync(prod3)
+//pm.addProductsAsync(prod4)
+//pm.addProductsAsync(prod5)
+pm.addProductsAsync(prod6)
+
+pm.getProductsAsync()
+pm.getProductsByIdAsync(4);
 //pm.updateProduct(1, { title: "Mauro"});
 //pm.deleteProduct(1);
