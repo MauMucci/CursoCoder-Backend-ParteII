@@ -64,5 +64,25 @@
     "category": "prueba",
     "status": "true",
     "id": 6
+  },
+  {
+    "title": "Xiaomi",
+    "description": "Redmi Note X",
+    "price": "Teléfono con procesador Snapdragon, cámara cuádruple y batería de alta capacidad.",
+    "thumbnail": "ARS 14,999",
+    "code": "XMREDMINX-ARG",
+    "stock": 200,
+    "status": true,
+    "id": 7
+  },
+  {
+    "title": "Xiaomi",
+    "description": "Redmi Note X",
+    "price": "Teléfono con procesador Snapdragon, cámara cuádruple y batería de alta capacidad.",
+    "thumbnail": "ARS 14,999",
+    "code": "XMREDMINX-ARG",
+    "stock": 200,
+    "status": true,
+    "id": 8
   }
 ]

@@ -204,12 +204,12 @@ const prod6 = new Product(
 
 // pm.addProductsAsync(prod1)
 //pm.addProductsAsync(prod2)
- //pm.addProductsAsync(prod3)
+//pm.addProductsAsync(prod3)
 //pm.addProductsAsync(prod4)
 //pm.addProductsAsync(prod5)
-pm.addProductsAsync(prod6)
+//pm.addProductsAsync(prod6)
 
-pm.getProductsAsync()
-pm.getProductsByIdAsync(4);
+//pm.getProductsAsync()
+//pm.getProductsByIdAsync(4);
 //pm.updateProduct(1, { title: "Mauro"});
 //pm.deleteProduct(1);
