@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { Product } from '../Models/Product.js';
+import { Product } from '../Models/products.model.js';
 
 
 //let idIncrementado = 0;

@@ -11,4 +11,3 @@ export class Product {
             this.id = null            
     }
 }
-
