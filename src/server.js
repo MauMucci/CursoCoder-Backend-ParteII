@@ -5,9 +5,7 @@ import { productsRouter } from './routes/products.router.js';
 import viewsrouter from './routes/views.router.js';
 import {cartsRouter} from './routes/carts.router.js'
 import { Server } from 'socket.io';
-import { ProductManager } from './Mongo/Managers/productManager.js';
 import mongoose from 'mongoose';
-import { ProductModel } from './Mongo/Models/Product.model.js';
 
 const app = express() 
 const PORT = 5000;
@@ -22,7 +20,7 @@ app.use(express.static(__dirname + "/public"))
 
 
 //Routes
-app.use('/api/products',productsRouter)
+app.use('/',productsRouter)
 app.use('/api/carts',cartsRouter)
 app.use('/',viewsrouter)
 
@@ -33,16 +31,18 @@ app.use('/',viewsrouter)
 app.engine('handlebars', handlebars.engine({
     runtimeOptions: {
         allowProtoPropertiesByDefault: true,
-        allowProtoMethodsByDefault: true
+        allowProtoMethodsByDefault: true,
+        
     }
 }));
 
 app.set('views',__dirname + '/views')
 app.set('view engine','handlebars')
-// app.use(express.static(__dirname + 'public'))
+app.use(express.static(__dirname + 'public'))
 
 //Websocket
 io.on('connection',(socket) => {
+
     //console.log(`Nuevo cliente conectado con el id ${socket.id}`);
 
     //Evento para agregar productos
@@ -69,4 +69,4 @@ mongoose.connect(mongoUri)
     console.log(error)
 })
 
-
+    

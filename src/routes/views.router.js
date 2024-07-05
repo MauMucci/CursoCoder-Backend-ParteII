@@ -1,23 +1,23 @@
 import express from 'express';
 import { ProductManager } from '../Mongo/Managers/productManager.js';
+import { ProductModel } from '../Mongo/Models/Product.model.js';
 
 const viewsrouter = express.Router()
-//const pm = new ProductManager("./data/products.json")
-//const products = await pm.getProductsAsync()
 
-const pm = new ProductManager()
+
 
 viewsrouter.get('/home', async (req,res) => {
+          
+     const {page,limit} = req.query
+
      try {
-          const products = await pm.getProductAsync()
-          console.log("++++");
+          const products = await ProductModel.paginate({},{limit,page})
           res.render('home',{products})
           
      } catch (error) {
           res.status(500).json({error})
           
      }
-
 })
 
 

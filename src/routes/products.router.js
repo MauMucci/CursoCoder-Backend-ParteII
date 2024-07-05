@@ -1,35 +1,32 @@
 import express from 'express';
-import ProductManager  from '../FileSystem/Managers/ProductManagerFS.js';
+import { ProductModel } from '../Mongo/Models/Product.model.js';
 
 const productsRouter = express.Router()
-let pm = new ProductManager("./data/products.json")
 
 //------------ GET ------------
-productsRouter.get("/",async (req,res) => {
-    
-    try{
-        console.log("Se mostrarán todos los productos");
-        const productsGotten = await pm.getProductsAsync()
-        let limit = req.query.limit; //en la url debe decir localhost:8080/products/?limite=3
-        
-        if (limit && !isNaN(limit) && productsGotten.length > limit) {
-            const limitedProductsList = productsGotten.slice(0, limit)  //slice crea un nuevo array que contiene los primeros -limit- elementos de products
-            res.send({ limitedProductsList });
-        }else{
-            res.json(productsGotten)
+
+productsRouter.get("/api/products",async (req,res) => {
+
+    console.log("Se mostrarán todos los productos");
+    const {page,limit,query} = req.query
+
+        try{
+            const products = await ProductModel.paginate({}, {limit,page});    
+            res.json({
+                status:"success",
+                ...products
+            })
+            
         }
-    }
-    catch(error){
-        console.error("Error al obtener productos:", error);
-        res.status(500).json({ error: "Error interno del servidor" });// OK error desde el servidor?
-
-    }
-})
-
-productsRouter.get('/:pid', async (req, res) => {
-    try {
-        let pid = parseInt(req.params.pid);
-
+        catch(error){
+            console.error("Error al obtener productos:", error);
+            res.status(500).json({ error: "Error interno del servidor" });// OK error desde el servidor?
+            }
+        }
+    )
+        productsRouter.get('/api/products/:pid', async (req, res) => {
+                try {
+                    let pid = parseInt(req.params.pid);
         if (isNaN(pid)) {
             return res.status(400).json({ error: "ID de producto inválido" });
         }
