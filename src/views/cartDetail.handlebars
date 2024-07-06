@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Carrito</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Detalles del Carrito</h1>
+        {{#if cart.products.length}}
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Título del Producto</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each cart.products}}
+                    <tr>
+                        <td>{{@index}}</td>
+                        <td>{{this.product.title}}</td>
+                        <td>{{this.product.description}}</td>
+                        <td>${{this.product.price}}</td>
+                        <td>{{this.quantity}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <p>No hay productos en este carrito.</p>
+        {{/if}}
+        <a href="/home" class="btn btn-secondary mt-3">Volver al Listado de Productos</a>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

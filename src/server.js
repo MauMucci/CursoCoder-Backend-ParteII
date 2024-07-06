@@ -21,7 +21,7 @@ app.use(express.static(__dirname + "/public"))
 
 //Routes
 app.use('/',productsRouter)
-app.use('/api/carts',cartsRouter)
+app.use('/',cartsRouter)
 app.use('/',viewsrouter)
 
 

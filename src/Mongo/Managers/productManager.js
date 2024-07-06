@@ -13,7 +13,7 @@ export class ProductManager {
 
     addProductAsync = async ({title,description,thumbnail,code,stock,price,status}) => {
         if (!title || !description || !price || !thumbnail || !code || !stock) {
-            console.log("DATOS INCOMPLETOS PARA AGREGAR EL PRODUCTO")
+            console.log("DATOS INCOMPLETOS PARA AGREGAR EL PRODUCTO")            
             return null
         }
         return await ProductModel.create({title,description,thumbnail,code,stock,price,status})

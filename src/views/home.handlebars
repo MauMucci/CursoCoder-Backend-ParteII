@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="my-4">Listado de Productos *HOME*</h1>
+        <h1 class="my-4">Listado de Productos</h1>
         <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
@@ -19,7 +19,8 @@
                     <th>Título</th>
                     <th>Descripción</th>                    
                     <th>Stock</th>
-                    <th>Precio</th>                    
+                    <th>Precio</th>  
+                    <th></th>  
                 </tr>
             </thead>
             <tbody>
@@ -28,9 +29,9 @@
                         <td>{{@index}}</td>
                         <td>{{this.title}}</td>
                         <td>{{this.description}}</td>                        
-                        <td>{{this.stock}}</td>
                         <td>{{this.price}}</td>
-                        
+                        <td>{{this.stock}}</td>
+                        <td><a href="/products/{{this._id}}" class="btn btn-primary">Agregar</a></td>
                     </tr>
                 {{/each}}            
             </tbody>
