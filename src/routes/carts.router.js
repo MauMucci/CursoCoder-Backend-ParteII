@@ -49,7 +49,6 @@ cartsRouter.get('/carts/:cid',async(req,res) => {
       if(cid)
       {
           let cartSelectedById = await cartManager.getCartByIdAsync(cid)
-          console.log(cartSelectedById);
           res.render('cartDetail',{ cart: cartSelectedById })
       }
       else{
@@ -92,11 +91,9 @@ cartsRouter.post('/api/carts/:cid/product/:pid',async(req,res) => {
             const cartSelectedById = await cartManager.getCartByIdAsync(cid)     
 
             if (cartSelectedById) {
-              console.log("2- carrito encontrado")
               const productSelectedById = await productManager.getProductByIdAsync(pid);                
 
               if (productSelectedById) {
-                console.log(("3- producto encontrado"))
                 await cartManager.addProductToCartAsync(cartSelectedById._id, productSelectedById._id);
                 console.log("Producto agregado al carrito correctamente");
                 res.status(200).json({ message: "Producto agregado al carrito correctamente" });
@@ -129,10 +126,7 @@ cartsRouter.delete('/api/carts/:cid/products/:pid',async(req,res) => {
   }
   catch{(error) 
     res.status(500).send({ status: "error", message: `Error al eliminar el producto del carrito ${cid}`, error: error.message });
-
   }
-
-
 })
 
 cartsRouter.delete('/api/carts/:cid',async (req,res) => {

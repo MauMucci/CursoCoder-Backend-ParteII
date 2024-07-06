@@ -26,8 +26,6 @@ app.use('/',viewsrouter)
 
 
 //Handlebars
-//app.engine('handlebars',handlebars.engine())
-
 app.engine('handlebars', handlebars.engine({
     runtimeOptions: {
         allowProtoPropertiesByDefault: true,

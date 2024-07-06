@@ -9,7 +9,6 @@ const productManager = new ProductManager()
 
 productsRouter.get("/api/products",async (req,res) => {
 
-    console.log("Se mostrarán todos los productos");
     let {page,limit} = req.query
 
     try{
@@ -86,7 +85,6 @@ productsRouter.post('/api/products',async (req,res)=> {
 productsRouter.put('/api/products/:pid', async (req, res) => {
     try {
         let pid = req.params.pid;
-
         let productToUpdate = req.body;
 
         const isUpdated = await productManager.updateProductAsync(pid, productToUpdate);
@@ -101,6 +99,7 @@ productsRouter.put('/api/products/:pid', async (req, res) => {
         res.status(404).json({ error: "Producto no encontrado" });
     }
 });
+
 //------------ DELETE ------------
 productsRouter.delete('/api/products/:pid', async (req, res) => {
     try {
@@ -111,7 +110,6 @@ productsRouter.delete('/api/products/:pid', async (req, res) => {
             res.send({ status: "success", message: "Producto eliminado" });
         }
 
-        
     } catch (error) {
         console.error("Error al borrar producto:", error);
         res.status(404).json({ error: "Producto no encontrado" });

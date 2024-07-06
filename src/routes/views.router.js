@@ -8,7 +8,7 @@ const viewsrouter = express.Router()
 
 viewsrouter.get('/home', async (req,res) => {
           
-     const {page,limit} = req.query
+     const {page=1,limit=5} = req.query 
 
      try {
           const products = await ProductModel.paginate({},{limit,page})
@@ -22,7 +22,6 @@ viewsrouter.get('/home', async (req,res) => {
 
 
 viewsrouter.get('/realTimeProducts',(req,res) => {
-    
      res.render('realTimeProducts',{})
 })
 

@@ -38,8 +38,6 @@ export class CartManager {
             if (!product) {
                 throw new Error ("Producto no encontrado")
             }
-            console.log(cid,pid)
-            
             cart.products.push({product:pid,quantity:1})
             
             await cart.save()
@@ -61,17 +59,14 @@ export class CartManager {
                 throw new Error(`No se encontró el carrito con id ${cid}`)
                 }
     
-                // Encuentra el índice del producto en el carrito
                 const productIndex = cart.products.findIndex(p => p.product.toString() === pid);
     
                 if (productIndex === -1) {
                     throw new Error(`No se encontró el producto con id ${pid} en el carrito`);
                 }
     
-                // Elimina el producto del carrito
                 cart.products.splice(productIndex, 1);
     
-                // Guarda los cambios en la base de datos
                 await cart.save();
                 return cart;
     
@@ -91,20 +86,14 @@ export class CartManager {
                 if(!cart){
                     throw new Error (`No se encontro el carrito ${cid}`)
                 }
-    
-                console.log(cart.products)
-                console.log(products)
-                //Actualizo el carrito con los productos enviados en el body
                 cart.products = products
     
-                //Guardo en la bdd
                 await cart.save()
     
                 return
                 
             }
             catch (error) {
-                // Manejar errores
                 console.error("Error al actualizar el carrito:", error);
             }
         }
@@ -119,17 +108,14 @@ export class CartManager {
                     throw new Error(`No se encontró el carrito con ID ${cid}`);
                 }
         
-                // Busca el producto en el carrito por su ID
                 const productIndex = cart.products.findIndex(p => p.product.toString() === pid);
                 
                 if (productIndex === -1) {
                     throw new Error(`No se encontró el producto con ID ${pid} en el carrito`);
                 }
         
-                // Actualiza la cantidad de ejemplares del producto
                 cart.products[productIndex].quantity = quantity;
         
-                // Guarda los cambios en la base de datos
                 await cart.save();
         
                 return cart;
@@ -152,7 +138,6 @@ export class CartManager {
             }
     
             cart.products = []
-    
             await cart.save();
             }
             
