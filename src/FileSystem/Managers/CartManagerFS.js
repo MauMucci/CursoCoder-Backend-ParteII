@@ -1,5 +1,5 @@
 import fs from 'fs'
-import ProductManager from './ProductManager.js';
+import ProductManager from './ProductManagerFS.js';
 
 let pm = new ProductManager("./files/products.json")
 

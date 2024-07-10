@@ -1,8 +1,7 @@
 {
-  "name" : "preentrega_2",
+  "name": "preentrega_2",
   "version": "1.0.0",
-  "description": "",
-  "main":"index.js", 
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon src/server.js"
   },
@@ -10,7 +9,21 @@
     "expres": "^0.0.5",
     "express": "^4.19.2",
     "express-handlebars": "^7.1.2",
+    "mongoose": "^8.4.4",
+    "mongoose-paginate-v2": "^1.8.2",
     "socket.io": "^4.7.5"
   },
-  "type": "module"
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MauMucci/CursoCoder-Backend-ParteI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MauMucci/CursoCoder-Backend-ParteI/issues"
+  },
+  "homepage": "https://github.com/MauMucci/CursoCoder-Backend-ParteI#readme",
+  "description": ""
 }

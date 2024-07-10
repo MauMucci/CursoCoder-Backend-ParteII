@@ -1,40 +1,38 @@
 import express from 'express';
-import  ProductManager  from '../Managers/ProductManager.js';
+import { ProductManager } from '../Mongo/Managers/productManager.js';
+import { ProductModel } from '../Mongo/Models/Product.model.js';
 
 const productsRouter = express.Router()
-let pm = new ProductManager("./files/products.json")
+const productManager = new ProductManager()
 
 //------------ GET ------------
-productsRouter.get("/",async (req,res) => {
-    
+
+productsRouter.get("/api/products",async (req,res) => {
+
+    let {page,limit} = req.query
+
     try{
-        console.log("Se mostrarán todos los productos");
-        const productsGotten = await pm.getProductsAsync()
-        let limit = req.query.limit; //en la url debe decir localhost:8080/products/?limite=3
+        const products = await ProductModel.paginate({}, {limit,page});    
+        res.json({
+            status:"success",
+            ...products
+        })
+    }
         
-        if (limit && !isNaN(limit) && productsGotten.length > limit) {
-            const limitedProductsList = productsGotten.slice(0, limit)  //slice crea un nuevo array que contiene los primeros -limit- elementos de products
-            res.send({ limitedProductsList });
-        }else{
-            res.json(productsGotten)
+        catch(error){
+            console.error("Error al obtener productos:", error);
+            res.status(500).json({ error: "Error interno del servidor" });// OK error desde el servidor?
+            }
         }
-    }
-    catch(error){
-        console.error("Error al obtener productos:", error);
-        res.status(500).json({ error: "Error interno del servidor" });// OK error desde el servidor?
+    )
 
-    }
-})
+    
+productsRouter.get('/api/products/:pid', async (req, res) => {
 
-productsRouter.get('/:pid', async (req, res) => {
     try {
-        let pid = parseInt(req.params.pid);
 
-        if (isNaN(pid)) {
-            return res.status(400).json({ error: "ID de producto inválido" });
-        }
-
-        let productSelectedById = await pm.getProductsByIdAsync(pid);
+        let pid = req.params.pid
+        let productSelectedById = await productManager.getProductByIdAsync(pid);
         
         if (!productSelectedById) {
             return res.status(404).json({ error: "Producto no encontrado" });
@@ -47,12 +45,36 @@ productsRouter.get('/:pid', async (req, res) => {
     }
 });
 
+
+productsRouter.get('/products/:pid',async (req,res) => {
+    try {
+        const pid = req.params.pid;
+        const product = await productManager.getProductByIdAsync(pid);
+
+        if (!product) {
+            return res.status(404).render('notFound', { message: "Producto no encontrado" });
+        }
+
+        res.render('productDetail', { product }); // Renderiza la vista 'productDetails' con los detalles del producto
+    } catch (error) {
+        console.error("Error al obtener producto por ID:", error);
+        res.status(500).render('error', { message: "Error interno del servidor" });
+    }
+
+})
+
 //------------ POST ------------
-productsRouter.post('/',async (req,res)=> {
+productsRouter.post('/api/products',async (req,res)=> {
     try {
         let newProduct = req.body;
-        await pm.addProductsAsync(newProduct);
-        res.status(400).send({ status: "success", message: "producto agregado" });
+        const isAdded = await productManager.addProductAsync(newProduct);
+        if(isAdded){
+            res.status(400).send({ status: "success", message: "producto agregado" });
+        }
+        else{
+            res.status(200).send({status: "Not success, missing data"})
+        }
+
     } catch (error) {
         console.error("Error al agregar producto:", error);
         res.status(500).json({ error: "Error interno del servidor" });
@@ -60,33 +82,34 @@ productsRouter.post('/',async (req,res)=> {
 })
 
 //------------ PUT ------------
-productsRouter.put('/:pid', async (req, res) => {
+productsRouter.put('/api/products/:pid', async (req, res) => {
     try {
-        let pid = parseInt(req.params.pid);
-
-        if (isNaN(pid)) {
-            return res.status(400).json({ error: "ID de producto inválido" });
-        }
-
+        let pid = req.params.pid;
         let productToUpdate = req.body;
-        await pm.updateProduct(pid, productToUpdate);
-        res.send({ status: "success", message: "Producto actualizado" });
+
+        const isUpdated = await productManager.updateProductAsync(pid, productToUpdate);
+        if(isUpdated){
+            res.send({ status: "success", message: "Producto actualizado" });
+        }
+        else{
+            res.status(200).send({status: "Not success, missing data"})
+        }
     } catch (error) {
         console.error("Error al actualizar producto:", error);
         res.status(404).json({ error: "Producto no encontrado" });
     }
 });
-//------------ DELETE ------------
-productsRouter.delete('/:pid', async (req, res) => {
-    try {
-        let pid = parseInt(req.params.pid);
 
-        if (isNaN(pid)) {
-            return res.status(400).json({ error: "ID de producto inválido" });
+//------------ DELETE ------------
+productsRouter.delete('/api/products/:pid', async (req, res) => {
+    try {
+        let pid = req.params.pid;
+
+        const isDeleted = await productManager.deleteProductAsync(pid);
+        if(isDeleted){
+            res.send({ status: "success", message: "Producto eliminado" });
         }
 
-        await pm.deleteProduct(pid);
-        res.send({ status: "success", message: "Producto eliminado" });
     } catch (error) {
         console.error("Error al borrar producto:", error);
         res.status(404).json({ error: "Producto no encontrado" });

@@ -1,0 +1,20 @@
+/* styles.css */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: red;
+    border-top: 1px solid #ddd;
+}
+
+.pagination-left {
+    display: flex;
+}
+
+.pagination-right {
+    display: flex;
+    align-items: center;
+}

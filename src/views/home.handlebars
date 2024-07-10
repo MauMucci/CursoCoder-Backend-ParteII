@@ -6,38 +6,67 @@
     <title>Listado de Productos index</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../public/css/styles.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1 class="my-4">Listado de Productos index</h1>
+        <h1 class="my-4">Listado de Productos</h1>
         <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
+                    <th>#</th>
                     <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Código</th>
+                    <th>Descripción</th>                    
                     <th>Stock</th>
-                    <th>Estado</th>
-                    <th>Categoría</th>
-                    <th>ID</th>
+                    <th>Precio</th>  
+                    <th></th>  
                 </tr>
             </thead>
             <tbody>
-                {{#each products}}
+                {{#each products.docs}}
                     <tr>
+                        <td>{{@index}}</td>
                         <td>{{this.title}}</td>
-                        <td>{{this.description}}</td>
+                        <td>{{this.description}}</td>                        
                         <td>{{this.price}}</td>
-                        <td>{{this.code}}</td>
                         <td>{{this.stock}}</td>
-                        <td>{{this.status}}</td>
-                        <td>{{this.category}}</td>
-                        <td>{{this.id}}</td>
+                        <td><a href="/products/{{this._id}}" class="btn btn-primary">Agregar</a></td>
                     </tr>
                 {{/each}}            
             </tbody>
         </table>
+
+<!--  -->
+       <div class="pagination-container">
+            <div class="pagination-left">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {{#if products.hasPrevPage}}
+                            <li class="page-item">
+                                <a class="page-link" href="/home?page={{products.prevPage}}&&limit=5">Previous</a>
+                            </li>
+                        {{/if}}
+
+                        {{#if products.hasNextPage}}
+                            <li class="page-item">
+                                <a class="page-link" href="/home?page={{products.nextPage}}&&limit=5">Next</a>
+                            </li>
+                        {{/if}}
+                    </ul>
+                </nav>
+            </div>
+            <div class="pagination-right">
+                <p class="btn btn-primary">
+                    Current Page: {{products.page}} / {{products.totalPages}}
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+
     </div>
 
     <!-- Bootstrap JS and dependencies -->

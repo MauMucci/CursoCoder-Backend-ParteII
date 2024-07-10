@@ -1,19 +1,27 @@
 import express from 'express';
-import ProductManager from "../Managers/ProductManager.js";
+import { ProductManager } from '../Mongo/Managers/productManager.js';
+import { ProductModel } from '../Mongo/Models/Product.model.js';
 
 const viewsrouter = express.Router()
-const pm = new ProductManager("./data/products.json")
-const products = await pm.getProductsAsync()
 
 
-viewsrouter.get('/home',(req,res) => {
 
-     res.render('home',{products})
+viewsrouter.get('/home', async (req,res) => {
+          
+     const {page=1,limit=5} = req.query 
+
+     try {
+          const products = await ProductModel.paginate({},{limit,page})
+          res.render('home',{products})
+          
+     } catch (error) {
+          res.status(500).json({error})
+          
+     }
 })
 
 
 viewsrouter.get('/realTimeProducts',(req,res) => {
-    
      res.render('realTimeProducts',{})
 })
 
