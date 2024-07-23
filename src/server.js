@@ -1,13 +1,26 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import path from 'path';
+import __dirname from './utils.js';
 import { productsRouter } from './routes/products.router.js';
 import {cartsRouter} from './routes/carts.router.js'
+import viewsRouter from './routes/views.router.js';
+import sessionRouter from './routes/session.router.js';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
+import handlebars from 'express-handlebars';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import { ProductManager } from './Mongo/Managers/productManager.js';
 
 const app = express() 
 const PORT = 5000;
+const httpServer = app.listen(PORT, ()=>console.log(`Servidor escuchando desde puerto  ${PORT}`))
+
+const io = new Server(httpServer)
+
+const pm = new ProductManager()
+const mongoUri = "mongodb://127.0.0.1:27017/ecommerce"
 
 
 //Middlewares
@@ -15,11 +28,22 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname,'public')))
 
+//Session
+app.use(session({
+    secret:"s3cr3t",
+    resave:false,
+    saveUninitialized:false,
+    store: MongoStore.create({
+        mongoUrl: mongoUri,
+        ttl: 60
+    })
+}))
 
 //Routes
 app.use('/',productsRouter)
 app.use('/',cartsRouter)
-app.use('/',viewsrouter)
+app.use('/',viewsRouter)
+app.use('/',sessionRouter)
 
 
 //Handlebars
@@ -31,9 +55,10 @@ app.engine('handlebars', handlebars.engine({
     }
 }));
 
-app.set('views',__dirname + '/views')
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine','handlebars')
-app.use(express.static(__dirname + 'public'))
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 //Websocket
 io.on('connection',(socket) => {
@@ -56,7 +81,6 @@ io.on('connection',(socket) => {
 })
 
 //Mongoose
-const mongoUri = "mongodb://127.0.0.1:27017/ecommerce"
 mongoose.connect(mongoUri)
 .then(console.log("CONECTADO A LA BASE DE DATOS"))
 .catch(error => {

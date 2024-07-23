@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Carrito</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+
+
+<div class="card text-bg-primary m-3">
+  <div class="card-header">
+    <h1> Perfil del usuario </h1>
+  </div>
+  <div class="card-body">
+
+    <ul>
+      <li>Nombre: {{user.first_name}} Apellido:{{user.last_name}} </li>
+      <li> Edad: {{user.age}} </li>
+      <li>Mail: {{user.email}} </li>
+    </ul>
+  </div>
+
+    <a href="/api/sessions/logout" class="btn btn-danger"><i
+        class="bi bi-box-arrow-right"
+      >Cerrar sesion</i></a>
+  </div>
+</div>

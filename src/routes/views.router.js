@@ -2,13 +2,12 @@ import express from 'express';
 import { ProductManager } from '../Mongo/Managers/productManager.js';
 import { ProductModel } from '../Mongo/Models/Product.model.js';
 
-const viewsrouter = express.Router()
+const viewsRouter = express.Router()
 
-
-
-viewsrouter.get('/home', async (req,res) => {
+viewsRouter.get('/home', async (req,res) => {
           
      const {page=1,limit=5} = req.query 
+     const isSession = req.session.user ? true : false
 
      try {
           const products = await ProductModel.paginate({},{limit,page})
@@ -21,10 +20,51 @@ viewsrouter.get('/home', async (req,res) => {
 })
 
 
-viewsrouter.get('/realTimeProducts',(req,res) => {
+viewsRouter.get('/realTimeProducts',(req,res) => {
      res.render('realTimeProducts',{})
 })
 
 
-export default viewsrouter
+
+viewsRouter.get("/", (req,res) => {
+     const isSession = req.session.user ? true: false
+     res.render("index",{title:"Inicio",isSession})
+})
+
+viewsRouter.get("/login",(req,res) => {
+     const isSession = req.session.user ? true:false;
+
+     if(isSession){
+          return res.redirect("/")
+     }
+
+     res.render("login",{title:"Login"})
+})
+
+viewsRouter.get("/register",(req,res) => {
+     const isSession = req.session.user ? true:false
+
+     if(isSession){
+          return res.redirect("/")
+     }
+
+     res.render("register",{title:"Registro"})
+})
+
+viewsRouter.get("/profile", (req, res) => {
+     const isSession = req.session.user ? true : false;
+   
+     if (!isSession) {
+       return res.redirect("/");
+     }
+   
+     res.render("profile", { title: "Perfil", user: req.session.user });
+   });
+
+
+
+
+
+
+export default viewsRouter
 
