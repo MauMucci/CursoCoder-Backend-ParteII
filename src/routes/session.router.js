@@ -15,12 +15,12 @@ sessionRouter.post("/api/sessions/login",async(req,res) => {
         const user = await userModel.findOne({email})
 
         if(!user){
-            return res.sendStatus(404).json({message:"Usuario no encontrado"})
+            return res.status(404).json({message:"Usuario no encontrado"})
         }
         if(user.password !== password){
             return res.status(401).json({message: "Contraseña incorrecta"})
         }
-
+  
         req.session.user = {
             first_name: user.first_name,
             last_name: user.last_name,
@@ -33,9 +33,7 @@ sessionRouter.post("/api/sessions/login",async(req,res) => {
 
     } catch (error) {
 
-        return res
-        .status(500)
-        .json({error: "Hubo un error", details:error.message})
+        return res.status(500).json({error: "Hubo un error", details:error.message})
         
     }
 })
