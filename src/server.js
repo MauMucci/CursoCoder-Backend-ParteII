@@ -5,11 +5,11 @@ import __dirname from './utils.js';
 import { productsRouter } from './routes/products.router.js';
 import {cartsRouter} from './routes/carts.router.js'
 import viewsRouter from './routes/views.router.js';
-import sessionRouter from './routes/session.router.js';
+//import sessionRouter from './routes/session.router.js';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import handlebars from 'express-handlebars';
-import session from 'express-session';
+//import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { ProductManager } from './Mongo/Managers/productManager.js';
 
@@ -29,21 +29,21 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname,'public')))
 
 //Session
-app.use(session({
-    secret:"s3cr3t",
-    resave:false,
-    saveUninitialized:false,
-    store: MongoStore.create({
-        mongoUrl: mongoUri,
-        ttl: 60
-    })
-}))
+// app.use(session({
+//     secret:"s3cr3t",
+//     resave:false,
+//     saveUninitialized:false,
+//     store: MongoStore.create({
+//         mongoUrl: mongoUri,
+//         ttl: 60
+//     })
+// }))
 
 //Routes
 app.use('/',productsRouter)
 app.use('/',cartsRouter)
 app.use('/',viewsRouter)
-app.use('/',sessionRouter)
+//app.use('/',sessionRouter)
 
 
 //Handlebars
